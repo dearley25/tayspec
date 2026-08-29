@@ -127,6 +127,19 @@ full path from where you are:
 From then on, any time you `git push` new changes, Render redeploys
 automatically.
 
+### Using a custom domain
+
+This project is live at **t3chspec.com** (registered on Namecheap), pointed at
+the Render service instead of the default `.onrender.com` address.
+
+1. In Render, open the service → **Settings → Custom Domains → Add Custom
+   Domain**, enter your domain (and `www.` if you want both).
+2. Render shows the exact DNS records to add. Add them at your registrar
+   (Namecheap: **Domain List → Manage → Advanced DNS**).
+3. Once DNS propagates and Render shows the domain as verified, update
+   `BASE_URL` in Render's Environment settings to the new domain (e.g.
+   `BASE_URL=https://t3chspec.com`) and redeploy.
+
 ### If you'd rather stick with familiar shared hosting
 
 Traditional hosts like Hostinger are commonly recommended as GoDaddy
