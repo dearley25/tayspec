@@ -242,5 +242,5 @@ app.get("/api/download/:id", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Field Spec running at ${BASE_URL}`);
+  console.log(`T3ch Spec running at ${BASE_URL}`);
 });

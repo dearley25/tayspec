@@ -1,4 +1,4 @@
-# Field Spec — with uploads
+# T3ch Spec — with uploads
 
 A small Node.js site: a public catalog of IT guides/videos/code, plus a
 password-protected upload page so you can add new material without touching
