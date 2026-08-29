@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload — Field Spec</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> Field Spec</div>
+    <nav><a href="index.html">Catalog</a><a href="upload.html">Upload</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <h1>Add new material</h1>
+  </div>
+
+  <form id="upload-form" class="upload-form" enctype="multipart/form-data">
+    <div id="form-message" class="form-message"></div>
+
+    <div class="field">
+      <label for="password">Admin password</label>
+      <input type="password" id="password" name="password" required>
+    </div>
+
+    <div class="field">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" required>
+    </div>
+
+    <div class="field">
+      <label for="kind">Type</label>
+      <select id="kind" name="kind" required>
+        <option value="guide">Guide</option>
+        <option value="video">Video</option>
+        <option value="code">Code</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="summary">Summary</label>
+      <textarea id="summary" name="summary" required placeholder="A sentence or two describing this entry — shown on the catalog card."></textarea>
+    </div>
+
+    <div class="field" id="video-field" style="display:none;">
+      <label for="videoUrl">Video embed URL</label>
+      <input type="url" id="videoUrl" name="videoUrl" placeholder="https://www.youtube-nocookie.com/embed/VIDEO_ID">
+      <div class="field-hint">Use the "embed" URL, not the regular watch link.</div>
+    </div>
+
+    <div class="field" id="file-field">
+      <label for="file">File</label>
+      <input type="file" id="file" name="file">
+      <div class="field-hint">PDFs, scripts, docs, images — up to 100MB.</div>
+    </div>
+
+    <div class="field">
+      <label style="display:flex; align-items:center; gap:8px; text-transform:none; letter-spacing:normal;">
+        <input type="checkbox" id="premium" name="premium" style="width:auto;">
+        Charge for this one
+      </label>
+    </div>
+
+    <div class="field" id="price-field" style="display:none;">
+      <label for="priceDollars">Price (USD)</label>
+      <input type="text" id="priceDollars" name="priceDollars" placeholder="5.00">
+      <div class="field-hint">Buyers pay through Stripe Checkout. Minimum $0.50.</div>
+    </div>
+
+    <button type="submit" class="btn-primary">Publish entry</button>
+  </form>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">Field Spec — an independent, ad-free reference.</div>
+</footer>
+
+<script>
+const kindSelect = document.getElementById("kind");
+const videoField = document.getElementById("video-field");
+const premiumCheckbox = document.getElementById("premium");
+const priceField = document.getElementById("price-field");
+
+kindSelect.addEventListener("change", () => {
+  videoField.style.display = kindSelect.value === "video" ? "block" : "none";
+});
+
+premiumCheckbox.addEventListener("change", () => {
+  priceField.style.display = premiumCheckbox.checked ? "block" : "none";
+});
+
+document.getElementById("upload-form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const messageBox = document.getElementById("form-message");
+  messageBox.className = "form-message";
+  messageBox.textContent = "";
+
+  const formData = new FormData(form);
+
+  try {
+    const res = await fetch("/api/entries", {
+      method: "POST",
+      body: formData
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      messageBox.className = "form-message error";
+      messageBox.textContent = data.error || "Something went wrong.";
+      return;
+    }
+
+    messageBox.className = "form-message success";
+    messageBox.textContent = `Published ${data.entry.id}. View it on the catalog page.`;
+    form.reset();
+    videoField.style.display = "none";
+  } catch (err) {
+    messageBox.className = "form-message error";
+    messageBox.textContent = "Could not reach the server. Is it running?";
+  }
+});
+</script>
+</body>
+</html>

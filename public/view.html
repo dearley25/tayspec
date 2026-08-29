@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Spec</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> Field Spec</div>
+    <nav><a href="index.html">Catalog</a><a href="upload.html">Upload</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="index.html">&larr; Back to catalog</a>
+    <span id="entry-id" class="spec-id"></span>
+    <h1 id="entry-title">Loading…</h1>
+  </div>
+
+  <article class="article-body" id="entry-body"></article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">Field Spec — an independent, ad-free reference.</div>
+</footer>
+
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const res = await fetch("/api/entries");
+  const entries = await res.json();
+  const entry = entries.find((e) => e.id === id);
+
+  if (!entry) {
+    document.getElementById("entry-title").textContent = "Entry not found";
+    return;
+  }
+
+  document.getElementById("entry-id").textContent = `${entry.id} · ${entry.kind.toUpperCase()}`;
+  document.getElementById("entry-title").textContent = entry.title;
+
+  const body = document.getElementById("entry-body");
+  let html = `<p>${entry.summary}</p>`;
+
+  if (entry.videoUrl) {
+    html += `<div class="video-frame"><iframe src="${entry.videoUrl}" title="${entry.title}" allowfullscreen></iframe></div>`;
+  }
+
+  if (entry.fileUrl && !entry.fileUrl.endsWith(".html")) {
+    html += `<p><a href="${entry.fileUrl}" download>Download the file</a></p>`;
+  }
+
+  body.innerHTML = html;
+})();
+</script>
+</body>
+</html>

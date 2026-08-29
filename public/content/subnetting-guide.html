@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subnetting Without the Headache — Field Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> Field Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">GUIDE-001 · GUIDE</span>
+    <h1>Subnetting Without the Headache</h1>
+  </div>
+
+  <article class="article-body">
+    <p>Subnetting looks intimidating mostly because it's usually taught with the math first. Do it the other way: understand what you're trying to accomplish, then let the math follow.</p>
+
+    <h2>What a subnet actually is</h2>
+    <p>A network address splits into two parts: the network portion and the host portion. Subnetting just moves the line between them, borrowing bits from the host side to create smaller, separate networks out of one larger block.</p>
+
+    <h2>Reading CIDR notation</h2>
+    <p>An address like <code>192.168.1.0/24</code> means the first 24 bits are the network portion, leaving 8 bits for hosts. That gives you 256 addresses in the block — 254 usable, once you subtract the network and broadcast addresses.</p>
+
+    <h2>A worked example</h2>
+    <p>Say you're given <code>192.168.1.0/24</code> and asked to create 4 equal subnets. You need 2 extra bits to make 4 subnets (2² = 4), so you move the mask from /24 to /26. Each new subnet holds 64 addresses, 62 of them usable:</p>
+    <pre><code>192.168.1.0/26   →  hosts .1  – .62
+192.168.1.64/26  →  hosts .65 – .126
+192.168.1.128/26 →  hosts .129 – .190
+192.168.1.192/26 →  hosts .193 – .254</code></pre>
+
+    <h2>The shortcut worth memorizing</h2>
+    <p>Once you know the block size (256 minus the last octet of the subnet mask), you can list every subnet boundary by just adding that block size repeatedly. For a /26, the block size is 64, so the boundaries are 0, 64, 128, 192 — exactly what's above.</p>
+
+    <h2>Practice it before you need it</h2>
+    <p>Pick a /24 block and try splitting it into 8 subnets, then 16. If you can do that on paper in under a minute, you're in good shape for both exams and real network design work.</p>
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">Field Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>

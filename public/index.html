@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Spec — IT Knowledge Base</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> Field Spec</div>
+    <nav>
+      <a href="index.html">Catalog</a>
+      <a href="upload.html">Upload</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">IT reference &amp; teaching material</div>
+    <h1>Notes from the field, written down so you don't have to relearn them.</h1>
+    <p>Guides, short videos, and working code — the material I've picked up doing IT work, organized so you can find the one thing you need and get back to work.</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="filter-bar">
+    <input id="search-input" class="search" type="text" placeholder="Search the catalog…">
+    <button class="chip active" data-kind="all">All</button>
+    <button class="chip" data-kind="guide">Guides</button>
+    <button class="chip" data-kind="video">Video</button>
+    <button class="chip" data-kind="code">Code</button>
+  </div>
+
+  <div id="catalog-grid" class="catalog"></div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">
+    Field Spec — an independent, ad-free reference. New entries added as they're written.
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>

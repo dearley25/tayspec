@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bash: Rotate Log Files Safely — Field Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> Field Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">CODE-001 · CODE</span>
+    <h1>Bash: Rotate Log Files Safely</h1>
+  </div>
+
+  <article class="article-body">
+    <p>A small script for compressing and rotating a log file, keeping a fixed number of old copies, without truncating a file an application still has open for writing.</p>
+
+    <h2>The script</h2>
+    <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+LOG_FILE="/var/log/myapp/app.log"
+KEEP=5
+
+if [[ ! -f "$LOG_FILE" ]]; then
+  echo "No log file found at $LOG_FILE" &gt;&2
+  exit 1
+fi
+
+# shift existing rotated copies up by one, oldest first
+for ((i = KEEP - 1; i &gt;= 1; i--)); do
+  if [[ -f "${LOG_FILE}.${i}.gz" ]]; then
+    mv "${LOG_FILE}.${i}.gz" "${LOG_FILE}.$((i + 1)).gz"
+  fi
+done
+
+# compress the current log into slot 1
+gzip -c "$LOG_FILE" &gt; "${LOG_FILE}.1.gz"
+
+# truncate rather than delete, so the app's open file handle stays valid
+: &gt; "$LOG_FILE"
+
+# drop anything past the retention window
+find "$(dirname "$LOG_FILE")" -name "$(basename "$LOG_FILE").*.gz" \
+  | sort -t. -k2 -n \
+  | tail -n +"$((KEEP + 1))" \
+  | xargs -r rm --</code></pre>
+
+    <h2>Why truncate instead of delete</h2>
+    <p>If an application already has the log file open and you delete or rename it, the app keeps writing to the now-unlinked file — those log lines vanish once the process closes it. Truncating in place (<code>: &gt; "$LOG_FILE"</code>) keeps the same inode, so the app's file handle stays valid and new writes land in the fresh, empty file.</p>
+
+    <h2>Wiring it up</h2>
+    <p>Drop this in <code>/usr/local/bin/rotate-app-log.sh</code>, make it executable with <code>chmod +x</code>, and add a line to root's crontab to run it daily:</p>
+    <pre><code>0 0 * * * /usr/local/bin/rotate-app-log.sh</code></pre>
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">Field Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>

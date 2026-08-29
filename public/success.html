@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thanks — Field Spec</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> Field Spec</div>
+    <nav><a href="index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <h1 id="status-title">Confirming your payment…</h1>
+  </div>
+
+  <article class="article-body">
+    <p id="status-message">One moment.</p>
+    <p id="download-area"></p>
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">Field Spec — an independent, ad-free reference.</div>
+</footer>
+
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get("session_id");
+  const entryId = params.get("entry");
+  const title = document.getElementById("status-title");
+  const message = document.getElementById("status-message");
+  const downloadArea = document.getElementById("download-area");
+
+  if (!sessionId || !entryId) {
+    title.textContent = "Something's missing";
+    message.textContent = "This page needs a valid checkout link to work.";
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/download/${entryId}?session_id=${sessionId}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      title.textContent = "Couldn't confirm payment";
+      message.textContent = data.error || "Please contact support if you were charged.";
+      return;
+    }
+
+    title.textContent = "You're all set";
+    message.textContent = "Your purchase is confirmed. This download link expires in 10 minutes.";
+    downloadArea.innerHTML = `<a class="btn-primary" href="${data.url}" download>Download your file</a>`;
+  } catch (err) {
+    title.textContent = "Something went wrong";
+    message.textContent = "Could not reach the server to confirm your purchase.";
+  }
+})();
+</script>
+</body>
+</html>

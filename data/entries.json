@@ -1,0 +1,29 @@
+[
+  {
+    "id": "GUIDE-001",
+    "kind": "guide",
+    "title": "Subnetting Without the Headache",
+    "summary": "A worked-through approach to IPv4 subnetting: CIDR notation, host counts, and how to split a network on paper before you touch a router.",
+    "fileUrl": "/content/subnetting-guide.html",
+    "videoUrl": null,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "VIDEO-001",
+    "kind": "video",
+    "title": "Docker in Ten Minutes",
+    "summary": "A short walkthrough of images, containers, and the handful of commands you'll actually use day to day.",
+    "fileUrl": null,
+    "videoUrl": "https://www.youtube-nocookie.com/embed/YOUR_VIDEO_ID",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "CODE-001",
+    "kind": "code",
+    "title": "Bash: Rotate Log Files Safely",
+    "summary": "A small, well-commented script for rotating and compressing log files without racing an app that's still writing to them.",
+    "fileUrl": "/content/bash-log-rotate.html",
+    "videoUrl": null,
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]
