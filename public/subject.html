@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>T3ch Spec</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="index.html">Catalog</a><a href="upload.html">Upload</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="index.html">&larr; Back to catalog</a>
+    <span id="subject-id" class="spec-id"></span>
+    <h1 id="subject-title">Loading…</h1>
+    <p id="subject-summary" style="color: var(--paper-dim); max-width: 65ch; margin-top: 4px;"></p>
+  </div>
+
+  <div id="lesson-list" class="lesson-list"></div>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const res = await fetch("/api/entries");
+  const entries = await res.json();
+  const subject = entries.find((e) => e.id === id && e.kind === "subject");
+  const list = document.getElementById("lesson-list");
+
+  if (!subject) {
+    document.getElementById("subject-title").textContent = "Subject not found";
+    return;
+  }
+
+  document.getElementById("subject-id").textContent = `${subject.id} · SERIES`;
+  document.getElementById("subject-title").textContent = subject.title;
+  document.getElementById("subject-summary").textContent = subject.summary;
+  document.title = `${subject.title} — T3ch Spec`;
+
+  const lessons = entries.filter((e) => e.parentId === subject.id);
+
+  if (lessons.length === 0) {
+    list.innerHTML = `<div class="empty-state">No lessons published yet — check back soon.</div>`;
+    return;
+  }
+
+  list.innerHTML = lessons
+    .map((lesson, i) => {
+      const num = String(i + 1).padStart(2, "0");
+      const href = lesson.fileUrl || `view.html?id=${lesson.id}`;
+      const videoNote = lesson.videoUrl
+        ? `<span class="lesson-video-note">&#9654; includes walkthrough video</span>`
+        : "";
+      return `
+      <a class="lesson-row" href="${href}">
+        <span class="lesson-num">${num}</span>
+        <span class="lesson-body">
+          <span class="lesson-title">${lesson.title}</span>
+          <span class="lesson-summary">${lesson.summary}</span>
+          ${videoNote}
+        </span>
+      </a>`;
+    })
+    .join("");
+})();
+</script>
+</body>
+</html>

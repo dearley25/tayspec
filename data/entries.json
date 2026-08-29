@@ -9,10 +9,20 @@
     "createdAt": "2026-01-01T00:00:00.000Z"
   },
   {
+    "id": "SUBJECT-SECPLUS",
+    "kind": "subject",
+    "title": "CompTIA Security+ (SY0-701)",
+    "summary": "A free, 5-part study series covering the full Security+ exam blueprint: fundamentals, threat actors, controls & cryptography, network/endpoint/cloud security, and incident response & forensics.",
+    "fileUrl": null,
+    "videoUrl": null,
+    "createdAt": "2026-08-29T00:00:00.000Z"
+  },
+  {
     "id": "GUIDE-002",
     "kind": "guide",
-    "title": "Security+ Study Series, Part 1: Security Fundamentals",
-    "summary": "Free CompTIA Security+ (SY0-701) study notes: why security exists, the CIA triad, the AAA model, least privilege, defense in depth, zero trust, and how risk actually works.",
+    "parentId": "SUBJECT-SECPLUS",
+    "title": "Part 1: Security Fundamentals",
+    "summary": "Why security exists, the CIA triad, the AAA model, least privilege, defense in depth, zero trust, and how risk actually works.",
     "fileUrl": "/content/secplus-day1-fundamentals.html",
     "videoUrl": null,
     "createdAt": "2026-08-29T00:00:00.000Z"
@@ -20,8 +30,9 @@
   {
     "id": "GUIDE-003",
     "kind": "guide",
-    "title": "Security+ Study Series, Part 2: Threat Actors & Attack Types",
-    "summary": "Free CompTIA Security+ study notes on who attacks systems and why: threat actor types, motivations, threat vectors, the five major attack categories, and 14 scenario-style practice questions with answers.",
+    "parentId": "SUBJECT-SECPLUS",
+    "title": "Part 2: Threat Actors & Attack Types",
+    "summary": "Who attacks systems and why: threat actor types, motivations, threat vectors, the five major attack categories, and 14 scenario-style practice questions with answers.",
     "fileUrl": "/content/secplus-day2-threat-actors.html",
     "videoUrl": null,
     "createdAt": "2026-08-29T00:00:00.000Z"
@@ -29,8 +40,9 @@
   {
     "id": "GUIDE-004",
     "kind": "guide",
-    "title": "Security+ Study Series, Part 3: Security Controls & Cryptography",
-    "summary": "Free CompTIA Security+ study notes covering how controls are categorized, encryption (symmetric, asymmetric, hashing, digital signatures), PKI and digital certificates, data states, and a full glossary.",
+    "parentId": "SUBJECT-SECPLUS",
+    "title": "Part 3: Security Controls & Cryptography",
+    "summary": "How controls are categorized, encryption (symmetric, asymmetric, hashing, digital signatures), PKI and digital certificates, data states, and a full glossary.",
     "fileUrl": "/content/secplus-controls-cryptography.html",
     "videoUrl": null,
     "createdAt": "2026-08-29T00:00:00.000Z"
@@ -38,8 +50,9 @@
   {
     "id": "GUIDE-005",
     "kind": "guide",
-    "title": "Security+ Study Series, Part 4: Network, Endpoint & Cloud Security",
-    "summary": "Free CompTIA Security+ study notes on the tools that enforce security in practice: firewalls, IDS/IPS, SIEM, VPNs, network segmentation, EDR vs. XDR, and virtualization, with real vendor examples.",
+    "parentId": "SUBJECT-SECPLUS",
+    "title": "Part 4: Network, Endpoint & Cloud Security",
+    "summary": "The tools that enforce security in practice: firewalls, IDS/IPS, SIEM, VPNs, network segmentation, EDR vs. XDR, and virtualization, with real vendor examples.",
     "fileUrl": "/content/secplus-network-endpoint-cloud.html",
     "videoUrl": null,
     "createdAt": "2026-08-29T00:00:00.000Z"
@@ -47,8 +60,9 @@
   {
     "id": "GUIDE-006",
     "kind": "guide",
-    "title": "Security+ Study Series, Part 5: Incident Response & Forensics",
-    "summary": "Free CompTIA Security+ study notes on the six-phase incident response lifecycle, chain of custody, the digital forensics process, order of volatility, and the real forensic tools used in the field.",
+    "parentId": "SUBJECT-SECPLUS",
+    "title": "Part 5: Incident Response & Forensics",
+    "summary": "The six-phase incident response lifecycle, chain of custody, the digital forensics process, order of volatility, and the real forensic tools used in the field.",
     "fileUrl": "/content/secplus-incident-response-forensics.html",
     "videoUrl": null,
     "createdAt": "2026-08-29T00:00:00.000Z"

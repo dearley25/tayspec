@@ -256,6 +256,7 @@ header.site-head {
 .tag-kind.guide { color: #8FD0A9; }
 .tag-kind.video { color: #8FBDE0; }
 .tag-kind.code  { color: #E0985A; }
+.tag-kind.subject { color: var(--copper-bright); }
 
 .empty-state {
   font-family: var(--font-mono);
@@ -378,6 +379,68 @@ header.site-head {
   margin-bottom: 18px;
   font-family: var(--font-mono);
   font-size: 0.82rem;
+}
+
+/* ---------- Subject / lesson tree page ---------- */
+
+.lesson-list {
+  padding: 8px 0 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.lesson-row {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  border: 1px solid var(--grid-line-strong);
+  border-radius: 2px;
+  padding: 18px 20px;
+  background: rgba(13, 36, 56, 0.35);
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.lesson-row:hover {
+  border-color: var(--copper);
+  transform: translateX(2px);
+  text-decoration: none;
+}
+
+.lesson-num {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--copper-bright);
+  min-width: 2.2em;
+  padding-top: 2px;
+}
+
+.lesson-body { flex: 1; min-width: 0; }
+
+.lesson-title {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin-bottom: 6px;
+}
+
+.lesson-summary {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--paper-dim);
+}
+
+.lesson-video-note {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8FBDE0;
 }
 
 /* ---------- Footer ---------- */

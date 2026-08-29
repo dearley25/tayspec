@@ -8,6 +8,7 @@
   let query = "";
 
   function linkFor(item) {
+    if (item.kind === "subject") return `subject.html?id=${item.id}`;
     if (item.fileUrl && item.fileUrl.endsWith(".html")) return item.fileUrl;
     return `view.html?id=${item.id}`;
   }
@@ -33,8 +34,15 @@
   window.buyEntry = buyEntry;
 
   function render() {
-    const filtered = entries.filter((item) => {
-      const matchesKind = activeKind === "all" || item.kind === activeKind;
+    // Lessons that belong to a subject are reached through that subject's
+    // tree page, not listed loose in the top-level catalog.
+    const topLevel = entries.filter((item) => !item.parentId);
+
+    const filtered = topLevel.filter((item) => {
+      const matchesKind =
+        activeKind === "all" ||
+        item.kind === activeKind ||
+        (activeKind === "guide" && item.kind === "subject");
       const matchesQuery =
         query.trim() === "" ||
         item.title.toLowerCase().includes(query) ||
@@ -57,13 +65,20 @@
           ? `<button class="chip" style="margin-top:10px;" onclick="buyEntry('${item.id}')">Buy for ${priceLabel(item)}</button>`
           : "";
 
+        const kindLabel = item.kind === "subject" ? "series" : item.kind;
+        const lessonCount =
+          item.kind === "subject"
+            ? entries.filter((e) => e.parentId === item.id).length
+            : 0;
+
         return `
         <article class="spec-card">
           <span class="spec-id">${item.id}</span>
           <h3>${titleHtml}</h3>
           <p>${item.summary}</p>
           <div class="spec-meta">
-            <span class="tag-kind ${item.kind}">${item.kind}</span>
+            <span class="tag-kind ${item.kind}">${kindLabel}</span>
+            ${lessonCount ? `<span class="tag-kind">${lessonCount} lessons</span>` : ""}
             ${item.premium ? '<span class="tag-kind" style="color:var(--copper-bright);">paid</span>' : ""}
           </div>
           ${actionHtml}
