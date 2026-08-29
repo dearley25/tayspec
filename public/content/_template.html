@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Replace TITLE below in both the <title> tag and the <h1> -->
+<title>TITLE — T3ch Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <!-- ID follows the existing pattern: GUIDE-002, CODE-002, etc. — next
+         free number for that kind. Also add a matching entry to
+         data/entries.json so it shows up on the catalog page. -->
+    <span class="spec-id">GUIDE-XXX · GUIDE</span>
+    <h1>TITLE</h1>
+  </div>
+
+  <article class="article-body">
+
+    <!-- 1. THE PROBLEM — 2-3 sentences. What breaks, or what task this
+         solves. A beginner should know why to care; someone experienced
+         should be able to skim-confirm this is the guide they need. -->
+    <p>
+      Open with the problem this solves, in plain language. No throat-clearing —
+      say what goes wrong (or what you're trying to accomplish) in the first sentence.
+    </p>
+
+    <!-- 2. PREREQUISITES — tools, access, prior knowledge. Keeps people
+         from getting halfway through and hitting a wall. -->
+    <h2>Before you start</h2>
+    <div class="callout">
+      <span class="callout-label">Prerequisites</span>
+      <ul>
+        <li>Tool or account needed, e.g. "A Linux VM with sudo access"</li>
+        <li>Prior knowledge assumed, e.g. "Comfortable with basic terminal commands"</li>
+      </ul>
+    </div>
+
+    <!-- 3. THE WALKTHROUGH — numbered/step h2 sections. Use real commands
+         and code blocks, not paraphrased theory. Add as many h2 steps as
+         the task needs. -->
+    <h2>Step 1: ...</h2>
+    <p>Explain the step, then show the actual command or config:</p>
+    <pre><code>example-command --with-real-flags</code></pre>
+
+    <h2>Step 2: ...</h2>
+    <p>Keep going, one concrete action per section. Inline <code>code</code> for
+      short references, <code>&lt;pre&gt;</code> blocks for anything multi-line.</p>
+
+    <!-- 4. GOTCHAS — the 1-2 things that actually trip people up. This is
+         the part that makes a guide feel written by someone who's done it
+         for real, not copied from docs. -->
+    <h2>Watch out for</h2>
+    <div class="callout">
+      <span class="callout-label">Gotcha</span>
+      <p>The specific, non-obvious thing that goes wrong — and how to avoid or fix it.</p>
+    </div>
+
+    <!-- 5. CHEAT-SHEET RECAP — short summary for someone skimming back
+         later instead of rereading the whole thing. -->
+    <h2>Quick reference</h2>
+    <ul class="checklist">
+      <li>Step 1 in one line</li>
+      <li>Step 2 in one line</li>
+      <li>The one gotcha, restated short</li>
+    </ul>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>
