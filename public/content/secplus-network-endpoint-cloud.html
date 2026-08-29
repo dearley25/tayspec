@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Network, Endpoint &amp; Cloud Security — T3ch Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">GUIDE-005 · GUIDE</span>
+    <h1>Network, Endpoint &amp; Cloud Security</h1>
+  </div>
+
+  <article class="article-body">
+
+    <p>Part 4 of a Security+ (SY0-701) study series. This part moves from concepts into the actual
+      tools that enforce them: firewalls, IDS/IPS, SIEM, VPNs, network segmentation, EDR/XDR, and
+      virtualization — what each one is for, how it works, and where the real vendors sit in this
+      space.</p>
+
+    <h2>Firewalls</h2>
+    <p>A firewall is a traffic control system. It sits between networks and decides what traffic is
+      allowed and what's blocked, based on rules.</p>
+    <ul>
+      <li><strong>Packet-filtering (stateless)</strong> — the oldest, simplest type. Looks only at
+        source IP, destination IP, port, and protocol, and doesn't track conversations. Fast but
+        limited — e.g. "block all traffic from 203.0.113.10" or "allow TCP port 80."</li>
+      <li><strong>Stateful</strong> — tracks connection state (NEW vs. ESTABLISHED) and automatically
+        allows return traffic. The most common type in routers and business firewalls. More secure
+        than stateless because it prevents spoofed response packets.</li>
+      <li><strong>Next-generation firewall (NGFW)</strong> — combines the firewall with security
+        inspection: it can see applications (not just ports), users, and content, and typically
+        bundles IDS/IPS, application awareness, SSL inspection, and malware filtering. Example: allow
+        YouTube but block YouTube uploads, or block BitTorrent even when it's tunneled over port
+        443.</li>
+      <li><strong>Web application firewall (WAF)</strong> — protects web applications, not networks.
+        Sits in front of websites and databases, defending against SQL injection, XSS, and CSRF, and
+        operates at Layer 7 (HTTP/HTTPS).</li>
+    </ul>
+    <div class="callout">
+      <span class="callout-label">Key point</span>
+      <p>A WAF protects the <em>application</em>. A network firewall protects the <em>network</em>.
+        They are not interchangeable.</p>
+    </div>
+    <p>Firewall rules are processed top-down, first match wins, and rule sets almost always end with
+      an <strong>implicit deny</strong> — for example: allow HTTPS from the internet to the web
+      server, allow SSH from the admin network, deny everything else.</p>
+    <p>Real products worth knowing: <a href="https://www.paloaltonetworks.com/network-security" target="_blank" rel="noopener">Palo Alto Networks</a> (NGFW leader), <a href="https://www.fortinet.com/products/next-generation-firewall" target="_blank" rel="noopener">Fortinet FortiGate</a>, <a href="https://www.pfsense.org/" target="_blank" rel="noopener">pfSense</a> (free, lab-friendly), and <a href="https://www.cloudflare.com/application-services/products/waf/" target="_blank" rel="noopener">Cloudflare</a> for WAF.</p>
+
+    <h2>IDS vs. IPS</h2>
+    <ul>
+      <li><strong>IDS (Intrusion Detection System)</strong> — monitors traffic for known attack
+        signatures and anomalies, and alerts. It does not block traffic.</li>
+      <li><strong>IPS (Intrusion Prevention System)</strong> — sits inline and can detect <em>and</em>
+        block attacks in real time. More powerful, but carries a real risk of false positives
+        blocking legitimate traffic.</li>
+    </ul>
+    <p>Real tools: <a href="https://www.snort.org/" target="_blank" rel="noopener">Snort</a> and <a href="https://suricata.io" target="_blank" rel="noopener">Suricata</a>.</p>
+
+    <h2>SIEM (Security Information &amp; Event Management)</h2>
+    <p>A SIEM centralizes logs from firewalls, servers, endpoints, and cloud services, then correlates
+      events to detect attacks — providing alerts, dashboards, and reports. It matters because
+      attacks are multi-step: a SIEM connects a login failure, a firewall alert, and a malware
+      detection into one picture, turning noise into meaning.</p>
+    <p>Example detection chain: failed VPN logins &rarr; a login success from a new country &rarr;
+      privilege escalation &rarr; data exfiltration. Individually these look unremarkable — together,
+      the SIEM flags "this is not normal behavior."</p>
+    <p>Real platforms: <a href="https://www.splunk.com/en_us/blog/learn/siem-security-information-event-management.html" target="_blank" rel="noopener">Splunk</a>, <a href="https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-sentinel/" target="_blank" rel="noopener">Microsoft Sentinel</a>, and <a href="https://www.elastic.co/security" target="_blank" rel="noopener">Elastic Security (ELK)</a>.</p>
+
+    <h2>VPN (Virtual Private Network)</h2>
+    <p>A VPN creates an encrypted tunnel that protects data in transit, used for remote access or
+      site-to-site connections.</p>
+    <ul>
+      <li><strong>Remote access VPN</strong> — user to corporate network, used by remote workers,
+        requires authentication.</li>
+      <li><strong>Site-to-site VPN</strong> — network to network, connecting offices, data centers, or
+        cloud VPCs.</li>
+    </ul>
+    <p>The <strong>protocol</strong> is the rulebook for the tunnel: how it's created, how
+      authentication happens, how encryption is applied, and how data is packaged and transported.</p>
+    <ul>
+      <li><strong>IPsec</strong> — a suite of protocols (not a single one), operating at the network
+        layer (Layer 3), securing all IP traffic rather than just web traffic.
+        <ul>
+          <li><strong>AH (Authentication Header)</strong> — integrity and authentication, no
+            encryption, rarely used on its own.</li>
+          <li><strong>ESP (Encapsulating Security Payload)</strong> — encryption, integrity, and
+            authentication together; the most common choice.</li>
+          <li><strong>Transport mode</strong> — encrypts the payload only; the original IP header
+            stays visible. Used mostly host-to-host.</li>
+          <li><strong>Tunnel mode</strong> — encrypts the entire original packet, including its IP
+            header, and wraps it in a new IP header. Used for site-to-site VPNs.</li>
+        </ul>
+      </li>
+      <li><strong>SSL/TLS VPNs</strong> — use the same encryption as HTTPS, operate at Layer 7, and
+        are often browser-based or use a lightweight client. The user authenticates through a browser
+        or client, and the tunnel runs over TCP 443 — which makes it very firewall-friendly. Good fit
+        for remote workers, BYOD, and contractors who need quick access without full network
+        exposure.</li>
+    </ul>
+    <p>Real tools: <a href="https://openvpn.net/" target="_blank" rel="noopener">OpenVPN</a> and <a href="https://www.wireguard.com/" target="_blank" rel="noopener">WireGuard</a> (modern, fast).</p>
+
+    <h2>Network segmentation</h2>
+    <p>Segmentation breaks a network into zones, limiting lateral movement (device to device to
+      device) and blast radius (an IoT network's problems staying on the IoT network). If one system
+      is compromised, an attacker can't automatically reach everything else — this is a critical
+      defense against ransomware specifically. Real tools: VLANs (e.g. VLAN 10 for Sales, VLAN 20 for
+      IT, VLAN 30 for Admins), firewalls placed between segments, and Zero Trust Network Access
+      (ZTNA).</p>
+
+    <h2>EDR vs. XDR</h2>
+    <p>Traditional antivirus looks for known bad files and relies heavily on signatures. Modern
+      attacks live off the land — abusing PowerShell, WMI, and macros — and leave behavioral traces
+      rather than files. EDR and XDR exist to focus on behavior, context, and response instead.</p>
+
+    <h3>EDR — Endpoint Detection &amp; Response</h3>
+    <p>Security technology that continuously monitors endpoint activity, records process behavior,
+      detects suspicious actions, and enables investigation and response. Lives directly on
+      workstations, servers, laptops, and phones — any device running an OS and executing processes.</p>
+    <p>EDR agents collect low-level telemetry: process creation, command-line arguments, file
+      creation/modification, registry changes, DLL injection, network connections from a process, and
+      privilege escalation attempts. It sees what <em>happened</em>, not just what file exists.
+      Detection relies on machine learning, Indicators of Attack (IoA), and threat intelligence
+      correlation — for example, flagging PowerShell launched by Word with an encoded command and an
+      outbound connection to an unknown IP as malicious behavior.</p>
+    <p>When a threat is detected, EDR can kill a malicious process, quarantine files, isolate the
+      endpoint from the network, roll back changes on some platforms, and alert the SOC. Its strength
+      is excellent endpoint visibility, strong ransomware detection, and real-time response — its
+      limitation is that it only sees the endpoint, and can miss attacks that start elsewhere.</p>
+    <p>Real platforms: <a href="https://www.crowdstrike.com/en-us/platform/endpoint-security/" target="_blank" rel="noopener">CrowdStrike Falcon</a>, <a href="https://www.sentinelone.com/platform/endpoint-security/" target="_blank" rel="noopener">SentinelOne</a>, and <a href="https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-endpoint" target="_blank" rel="noopener">Microsoft Defender for Endpoint</a>.</p>
+
+    <h3>XDR — Extended Detection &amp; Response</h3>
+    <p>XDR expands detection beyond the endpoint, correlating data from endpoints, network traffic,
+      email, cloud workloads, and identity systems. It exists because attacks don't stay in one
+      place — a modern kill chain might move through a phishing email, endpoint execution, credential
+      abuse, and cloud access, and XDR connects those steps into one narrative.</p>
+    <p>XDR can respond across systems at once: isolate an endpoint, disable a user account, block an
+      IP at the firewall, and revoke a token, all from correlated detections. It gives better attack
+      context and fewer, faster alerts — at the cost of vendor lock-in risk and less customizability
+      than a dedicated SIEM, with coverage that depends heavily on integrations.</p>
+    <p>Real platforms: <a href="https://www.microsoft.com/en-us/security/business/siem-and-xdr/microsoft-defender-xdr" target="_blank" rel="noopener">Microsoft XDR</a>, <a href="https://www.crowdstrike.com/en-us/resources/videos/crowdstrike-falcon-insight-xdr/" target="_blank" rel="noopener">CrowdStrike Falcon XDR</a>, and <a href="https://www.paloaltonetworks.com/cortex/cortex-xdr" target="_blank" rel="noopener">Palo Alto Cortex XDR</a>.</p>
+
+    <h3>How it fits together</h3>
+    <ol>
+      <li>Phishing email delivered.</li>
+      <li>User clicks the malicious link.</li>
+      <li>Endpoint executes the payload.</li>
+      <li>EDR detects the suspicious behavior.</li>
+      <li>XDR correlates email events, endpoint behavior, and identity activity.</li>
+      <li>Automated response triggers.</li>
+      <li>Incident closes faster.</li>
+    </ol>
+
+    <h2>Virtualization</h2>
+    <p>Virtualization runs multiple virtual computers (VMs) on one physical machine using software
+      called a <strong>hypervisor</strong> — one physical server becomes many isolated virtual
+      systems, each of which believes it's a real computer.</p>
+    <ul>
+      <li><strong>Type 1 (bare-metal) hypervisor</strong> — runs directly on hardware. More secure and
+        efficient, used in enterprises. Examples: VMware ESXi, Hyper-V Server.</li>
+      <li><strong>Type 2 (hosted) hypervisor</strong> — runs on top of an existing OS. Less secure,
+        larger attack surface, typically used for labs and testing. Examples: VirtualBox, VMware
+        Workstation.</li>
+    </ul>
+    <div class="callout">
+      <span class="callout-label">Exam keyword</span>
+      <p><strong>Isolation</strong> is the concept the exam is testing whenever VMs come up. If VM1
+        gets compromised, VM2 should stay safe — this limits the blast radius of an attack. But
+        isolation does not mean invisible: a <strong>VM escape</strong>, where malware breaks out of
+        one VM and compromises the hypervisor or other VMs, is the worst-case scenario for this
+        model.</p>
+    </div>
+    <p><strong>Snapshots</strong> are a point-in-time backup of a VM, letting you roll back quickly
+      after a bad patch or a malware infection — take a snapshot, install updates, and if the update
+      breaks something, roll back. Snapshots are fast rollback, not a substitute for real backups. VMs
+      can also be cloned, migrated, and restored quickly — if the underlying hardware fails, a VM can
+      be restored on another host within minutes.</p>
+
+    <h3>Exam scenarios</h3>
+    <ul class="checklist">
+      <li>Company wants strong isolation across multiple servers on one host &rarr; virtualization with
+        a Type 1 hypervisor</li>
+      <li>Malware infects a VM and spreads to others &rarr; tests the concept of VM escape / hypervisor
+        compromise</li>
+      <li>Security team wants fast rollback after ransomware testing &rarr; use VM snapshots</li>
+    </ul>
+
+    <h2>Quick reference</h2>
+    <ul class="checklist">
+      <li>WAF protects the app; a network firewall protects the network</li>
+      <li>IDS alerts only; IPS can block inline</li>
+      <li>SIEM correlates logs across the whole environment into one signal</li>
+      <li>IPsec tunnel mode encrypts the whole packet; transport mode encrypts payload only</li>
+      <li>SSL VPNs ride over TCP 443, which makes them firewall-friendly</li>
+      <li>Segmentation limits lateral movement and blast radius</li>
+      <li>EDR watches the endpoint; XDR correlates across endpoints, network, email, cloud, identity</li>
+      <li>One box, many computers = virtualization; Type 1 = enterprise-grade isolation</li>
+    </ul>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Threat Actors &amp; Attack Types — T3ch Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">GUIDE-003 · GUIDE</span>
+    <h1>Threat Actors &amp; Attack Types</h1>
+  </div>
+
+  <article class="article-body">
+
+    <p>Part 2 of a Security+ (SY0-701) study series. Security begins with understanding the attacker.
+      This part covers who attacks systems, why attacks happen, how attackers approach targets, and
+      the broad categories of attack every specific technique falls under.</p>
+
+    <h2>What is a threat actor?</h2>
+    <p>A threat actor is any person, group, or entity that can cause harm to systems, networks, or
+      data. They can be external or internal, and accidental or intentional — threat actors aren't
+      always hackers; sometimes they're employees or ordinary users who make a mistake.</p>
+    <p>Understanding threat actors helps an organization predict attack methods, prioritize defenses,
+      assess risk accurately, and design the right controls. Different attackers require different
+      defenses — security is contextual, and a bank and a school face very different threats.</p>
+
+    <h2>Threat actor classification</h2>
+    <p>Threat actors are typically classified by skill level, motivation, resources, and access level.
+      These categories help predict <em>behavior</em>, not morality.</p>
+
+    <ul>
+      <li><strong>Script kiddies</strong> — low-skill attackers who rely on pre-built tools and
+        scripts. Limited technical knowledge, opportunistic, and they target easy or unpatched
+        systems. Despite the low skill ceiling, they can still cause serious damage.</li>
+      <li><strong>Hacktivists</strong> — politically or socially motivated attackers focused on
+        promoting a cause, disrupting services, or exposing information. Common tactics: website
+        defacement, DDoS, data leaks. Hacktivists chase visibility, not profit.</li>
+      <li><strong>Organized crime</strong> — highly structured, financially motivated groups that
+        steal data, commit fraud, and deploy ransomware. Skilled attackers running long-term
+        campaigns with professional tooling — most ransomware attacks trace back to organized
+        crime.</li>
+      <li><strong>Nation-state actors</strong> — government-sponsored attackers motivated by
+        espionage, intellectual property theft, or infrastructure disruption. Extremely skilled,
+        well-funded, and persistent (this is where the term APT — Advanced Persistent Threat — comes
+        from). Nation-state attacks can go undetected for long periods.</li>
+      <li><strong>Insider threats</strong> — employees, contractors, or vendors, split into malicious,
+        negligent, and compromised insiders. Insiders already have legitimate access, which makes
+        them especially dangerous.</li>
+    </ul>
+
+    <h2>Threat actor motivation</h2>
+    <p>Motivation drives behavior: financial gain, political influence, espionage, revenge, or
+      curiosity and challenge. Motivation helps predict attack type — understanding <em>why</em>
+      helps predict <em>how</em>.</p>
+
+    <h2>Threat vectors and attack surface</h2>
+    <p>A <strong>threat vector</strong> is the path an attacker uses to gain access — email, web
+      applications, removable media, wireless networks, supply chain. It describes how the attack
+      enters, not the payload it delivers.</p>
+    <p>The <strong>attack surface</strong> is every possible entry point into a system: open ports,
+      user accounts, APIs, applications, physical access points. Smaller attack surface means lower
+      risk, and security hardening works by reducing that surface.</p>
+
+    <h2>Major attack categories</h2>
+    <p>Most specific attacks fall into one of five categories, and real-world attacks often combine
+      more than one.</p>
+
+    <ul>
+      <li><strong>Social engineering</strong> — exploits human trust, lack of awareness, and emotional
+        response. Examples: phishing, pretexting, impersonation, tailgating. Humans are often easier
+        to exploit than systems.</li>
+      <li><strong>Malware-based attacks</strong> — malicious software delivered via email attachments,
+        downloads, infected websites, or USB drives. Types include viruses, trojans, ransomware, and
+        spyware. Malware usually requires execution, not just delivery.</li>
+      <li><strong>Network-based attacks</strong> — target data in transit, network availability, or
+        network trust relationships. Examples: DDoS, man-in-the-middle, ARP poisoning, DNS spoofing.
+        These often exploit weak configurations.</li>
+      <li><strong>Application attacks</strong> — exploit poor coding and input validation flaws.
+        Examples: SQL injection, cross-site scripting (XSS), command injection, buffer overflow. Many
+        breaches start with a vulnerable web app.</li>
+      <li><strong>Physical attacks</strong> — target hardware, facilities, and devices directly.
+        Examples: theft, tailgating, hardware tampering, dumpster diving. Physical security is part
+        of cybersecurity, not separate from it.</li>
+    </ul>
+
+    <div class="callout">
+      <span class="callout-label">Gotcha</span>
+      <p>Real-world attacks often chain multiple categories together and occur in stages — a phishing
+        email leads to malware, which leads to lateral movement across the network. Attackers think
+        in steps, not single actions, so defense has to address the whole chain, not just one link
+        of it.</p>
+    </div>
+
+    <h2>Practice questions</h2>
+    <p>Each question below mirrors the scenario-based style used on the actual exam — read the
+      scenario, pick the principle it's testing, then check the explanation.</p>
+
+    <ul class="checklist">
+      <li><strong>Q:</strong> A company encrypts all customer data on its servers and restricts access
+        using permissions. Which CIA triad principle is most directly protected?
+        <br><strong>A: Confidentiality</strong> — encryption and access controls prevent unauthorized
+        access, which directly protects confidentiality.</li>
+      <li><strong>Q:</strong> An employee logs in successfully but can't modify system settings due to
+        their role. Which concept is being enforced?
+        <br><strong>A: Authorization</strong> — authorization determines what actions a user is
+        allowed to perform after logging in.</li>
+      <li><strong>Q:</strong> An attacker uses automated tools downloaded from the internet to scan
+        random IPs for open ports and known vulnerabilities. Which threat actor is most likely
+        responsible?
+        <br><strong>A: Script kiddie</strong> — script kiddies rely on pre-built tools and target
+        easy, random systems.</li>
+      <li><strong>Q:</strong> A hospital's ransomware attack encrypts patient records and blocks staff
+        from accessing them. Which CIA principle is most affected?
+        <br><strong>A: Availability</strong> — the data still exists but can't be accessed, meaning
+        availability has been disrupted.</li>
+      <li><strong>Q:</strong> Which situation best represents a risk: a hacker group existing on the
+        internet, an unpatched server, a firewall blocking traffic, or an unpatched server exposed to
+        the internet?
+        <br><strong>A: An unpatched server exposed to the internet</strong> — risk requires both a
+        threat and a vulnerability to be present at once.</li>
+      <li><strong>Q:</strong> An attacker emails an employee pretending to be IT support and convinces
+        them to reset their password. Which attack category is this?
+        <br><strong>A: Social engineering</strong> — the attacker exploits human trust, not a
+        technical flaw.</li>
+      <li><strong>Q:</strong> A company assigns users only the permissions necessary to do their jobs.
+        Which principle is being followed?
+        <br><strong>A: Least privilege</strong> — limiting access to only what's required reduces
+        potential damage.</li>
+      <li><strong>Q:</strong> Which threat actor is most likely to run long-term, stealthy attacks
+        focused on espionage rather than financial gain?
+        <br><strong>A: Nation-state actor</strong> — well-funded, highly skilled, and typically
+        focused on espionage.</li>
+      <li><strong>Q:</strong> Which control best represents accounting in the AAA model?
+        <br><strong>A: Activity logs and audit trails</strong> — accounting tracks what actions users
+        performed after gaining access.</li>
+      <li><strong>Q:</strong> A company installs firewalls, IDS, and endpoint protection together.
+        Which security strategy is this an example of?
+        <br><strong>A: Defense in depth</strong> — multiple overlapping security layers working
+        together.</li>
+      <li><strong>Q:</strong> Which attack-surface reduction strategy would most effectively lower
+        overall risk: more log retention, removing unused applications and services, adding more
+        users, or disabling encryption?
+        <br><strong>A: Removing unused applications and services</strong> — fewer entry points means
+        a smaller attack surface and lower risk.</li>
+      <li><strong>Q:</strong> A politically motivated group launches a DDoS attack against a
+        government website to make a public statement. Which threat actor type is most likely
+        responsible?
+        <br><strong>A: Hacktivist</strong> — driven by political or social causes, not profit.</li>
+      <li><strong>Q:</strong> An employee accidentally clicks a malicious link, causing malware to
+        execute. Which insider threat type does this represent?
+        <br><strong>A: Negligent insider</strong> — the action was unintentional, caused by a lack of
+        awareness.</li>
+      <li><strong>Q:</strong> Why is cybersecurity described as risk management rather than risk
+        elimination?
+        <br><strong>A: Threats will always exist</strong> — security reduces likelihood and impact,
+        but risk can never reach zero.</li>
+    </ul>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>

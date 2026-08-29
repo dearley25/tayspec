@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Controls &amp; Cryptography — T3ch Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">GUIDE-004 · GUIDE</span>
+    <h1>Security Controls &amp; Cryptography</h1>
+  </div>
+
+  <article class="article-body">
+
+    <p>Part 3 of a Security+ (SY0-701) study series. This part covers the two ways Security+
+      categorizes controls, then moves into cryptography — encryption, hashing, digital signatures,
+      and the certificate infrastructure (PKI) that makes trust on the internet possible.</p>
+
+    <h2>What are security controls?</h2>
+    <p>A security control is anything used to reduce risk by protecting systems, data, or people.
+      Controls don't eliminate threats or guarantee safety — what they <em>do</em> is reduce the
+      likelihood of an attack, reduce its impact, detect attacks early, and help recovery after an
+      incident. Security+ groups controls two different ways, and both groupings matter.</p>
+
+    <h3>By purpose</h3>
+    <ul>
+      <li><strong>Preventive</strong> — stops an attack before it happens: firewalls blocking traffic,
+        encryption, strong authentication, ACLs, least privilege. Reduces <em>likelihood</em>.</li>
+      <li><strong>Detective</strong> — identifies attacks that are happening or already happened:
+        logs, SIEM systems, IDS, alerts. Reduces <em>time to detection</em>.</li>
+      <li><strong>Corrective</strong> — fixes problems after detection: restoring from backups,
+        patching, re-imaging infected machines, resetting credentials. Reduces <em>impact and
+        recovery time</em>.</li>
+      <li><strong>Deterrent</strong> — discourages an attacker from trying at all: cameras, guards,
+        warning banners, lighting, signage. Works by increasing accountability and relying on fear of
+        detection or punishment.</li>
+      <li><strong>Compensating</strong> — used when the primary control can't be implemented, because
+        of a legacy system, budget constraint, or compatibility issue. Example: a legacy system that
+        can't be encrypted gets compensated for with network isolation, restricted access, and
+        increased monitoring; a system that can't support MFA gets compensated for with strong
+        password policy and login-attempt limits.</li>
+    </ul>
+    <div class="callout">
+      <span class="callout-label">Exam clue words</span>
+      <p>"Cannot implement," "legacy system," "not supported," and "alternative control" are all
+        signals the question is testing <strong>compensating</strong> controls specifically.</p>
+    </div>
+
+    <h3>By type</h3>
+    <ul>
+      <li><strong>Technical</strong> — enforced by technology: firewalls, antivirus/EDR, encryption,
+        IDS/IPS, MFA. Automated, consistent, and scalable — but can't fix poor human decisions.</li>
+      <li><strong>Administrative</strong> — policies, rules, and procedures: security policies,
+        acceptable use policies, training programs, background checks, incident response plans.
+        Shapes behavior and is often required for compliance, but relies on people actually
+        following it.</li>
+      <li><strong>Physical</strong> — protects facilities and hardware directly: locks, badges,
+        fences, cameras, access control vestibules. Prevents physical access, but doesn't stop a
+        purely cyber attack.</li>
+      <li><strong>Operational</strong> — how security is executed day to day: people following
+        processes, supported by technology. Log review and monitoring, incident response procedures,
+        and doing backups all fall here.</li>
+    </ul>
+
+    <h2>Cryptography basics</h2>
+    <p>Three terms worth pinning down before anything else: <strong>plaintext</strong> is normal,
+      human-readable data; a <strong>cipher</strong> is the algorithm and key used to transform it;
+      <strong>ciphertext</strong> is what you get after plaintext has gone through the cipher —
+      unreadable without the key.</p>
+    <p><strong>Encryption</strong> converts plaintext into ciphertext using an algorithm and a key.
+      Only someone with the correct key can decrypt it back — which means encryption protects data
+      even if an attacker gets direct access to it.</p>
+
+    <h3>Symmetric encryption</h3>
+    <p>The same key encrypts and decrypts. It's very fast and efficient for large data sets, but it
+      has a real weakness: the <strong>key distribution problem</strong> — how do you securely share
+      that one key in the first place? Examples: AES (128/192/256-bit) and the older DES. Common
+      uses: disk encryption, database encryption, and the data-transfer phase of a VPN tunnel.</p>
+
+    <h3>Asymmetric encryption</h3>
+    <p>Uses a key pair — a public key that's shared openly and a private key that's kept secret.
+      Slower than symmetric encryption, but it solves the key-exchange problem and enables identity
+      verification. Examples: RSA and ECC. Common uses: HTTPS handshakes, email encryption, digital
+      signatures.</p>
+    <p>In practice the two are combined: asymmetric encryption securely exchanges a key, then
+      symmetric encryption handles the actual data transfer. This combination is called
+      <strong>hybrid encryption</strong>.</p>
+
+    <h3>Hashing</h3>
+    <p>Hashing converts data into a fixed-length value and is strictly one-way — it cannot be
+      reversed. It's used to verify integrity and to store passwords securely. Examples: SHA-256,
+      MD5 (now considered insecure). Hashing is not encryption: there's no key, and nothing to
+      decrypt.</p>
+    <table style="width:100%; border-collapse:collapse; margin:1.6em 0;">
+      <tr><th style="text-align:left; padding:6px 12px; border-bottom:1px solid var(--grid-line-strong);">Hashing</th><th style="text-align:left; padding:6px 12px; border-bottom:1px solid var(--grid-line-strong);">Encryption</th></tr>
+      <tr><td style="padding:6px 12px;">One-way</td><td style="padding:6px 12px;">Two-way</td></tr>
+      <tr><td style="padding:6px 12px;">Integrity</td><td style="padding:6px 12px;">Confidentiality</td></tr>
+      <tr><td style="padding:6px 12px;">No key</td><td style="padding:6px 12px;">Uses keys</td></tr>
+      <tr><td style="padding:6px 12px;">Password storage</td><td style="padding:6px 12px;">Data protection</td></tr>
+    </table>
+
+    <h3>Digital signatures</h3>
+    <p>Digital signatures provide authentication, integrity, and non-repudiation. The sender hashes
+      the message, then encrypts that hash with their <em>private</em> key. The receiver decrypts it
+      with the sender's <em>public</em> key and compares hashes — a match proves the message is
+      authentic and wasn't altered in transit.</p>
+
+    <h2>Digital certificates and PKI</h2>
+    <p>If encryption protects data, PKI protects trust. Encryption alone never answers "how do I know
+      who I'm talking to?" — without PKI, anyone could claim to be a bank or send a "secure" message
+      with no way to verify it. PKI exists to solve identity verification and trust at scale.</p>
+    <p>A <strong>digital certificate</strong> is a trusted digital ID that binds a public key to a
+      verified identity — "this public key really belongs to this person, server, or organization."
+      It contains a public key, the subject (owner name), the issuer (the Certificate Authority), a
+      validity period, a serial number, and the CA's digital signature. <strong>Private keys are
+      never inside certificates.</strong></p>
+
+    <h3>What happens during an HTTPS handshake</h3>
+    <ol>
+      <li>The server sends its certificate.</li>
+      <li>Your browser verifies the certificate.</li>
+      <li>The browser trusts the public key.</li>
+      <li>The encrypted session begins.</li>
+    </ol>
+    <p>If trust fails at any step, the browser shows a warning instead.</p>
+
+    <h3>Key fields of a certificate</h3>
+    <ul>
+      <li><strong>Subject</strong> — who the certificate belongs to (Common Name / domain,
+        Organization, Country). If the subject doesn't match the site's domain, the browser
+        warns.</li>
+      <li><strong>Issuer</strong> — the trusted Certificate Authority that issued it. Browsers only
+        trust a certificate if they trust its issuer.</li>
+      <li><strong>Serial number</strong> — a unique ID from the issuing CA, used to track and revoke
+        the certificate.</li>
+      <li><strong>Validity period</strong> — "not before" and "not after" dates. An expired cert means
+        an untrusted connection.</li>
+      <li><strong>Public key</strong> — used to encrypt data and verify signatures. The private key is
+        never included.</li>
+      <li><strong>Signature algorithm</strong> — the algorithm the CA used to sign the certificate
+        (e.g. RSA with SHA-256, ECDSA with SHA-256). A weak algorithm is itself a security risk.</li>
+      <li><strong>Digital signature</strong> — created by the CA with its own private key, proving the
+        certificate hasn't been altered. Browsers verify it with the CA's public key.</li>
+      <li><strong>Extensions</strong> — define what the key is allowed to do: Key Usage, Extended Key
+        Usage (e.g. server or client authentication), Subject Alternative Name (modern browsers rely
+        on SAN rather than CN for the domain match), and CRL Distribution Points (where to check
+        revocation).</li>
+    </ul>
+
+    <h3>PKI vocabulary</h3>
+    <ul>
+      <li><strong>Public Key Infrastructure (PKI)</strong> — the framework of hardware, software,
+        policies, and procedures used to create, manage, distribute, validate, and revoke digital
+        certificates.</li>
+      <li><strong>Public key</strong> — shared openly; encrypts data and verifies signatures.</li>
+      <li><strong>Private key</strong> — kept secret; decrypts data and creates signatures. If a
+        private key is compromised, trust in everything it signed is lost.</li>
+      <li><strong>Certificate Authority (CA)</strong> — a trusted organization that verifies
+        identities, issues certificates, and signs them.</li>
+      <li><strong>Registration Authority (RA)</strong> — verifies the requester's identity before the
+        CA issues a certificate. The RA validates; the CA issues.</li>
+      <li><strong>Chain of trust</strong> — the hierarchical relationship Root CA &rarr; Intermediate
+        CA &rarr; end-entity certificate. If any link breaks, trust breaks.</li>
+      <li><strong>Root certificate</strong> — a self-signed certificate that serves as the ultimate
+        trust anchor.</li>
+      <li><strong>Intermediate certificate</strong> — issued by the root CA and used to issue
+        end-entity certificates, so the root CA itself is never directly exposed.</li>
+      <li><strong>CRL (Certificate Revocation List)</strong> — a list of revoked certificates,
+        published by a CA and checked periodically.</li>
+      <li><strong>OCSP (Online Certificate Status Protocol)</strong> — checks a certificate's
+        real-time validity instead of relying on a static list.</li>
+    </ul>
+
+    <h2>Data states</h2>
+    <p>Data exists in three states, and each needs its own protection strategy.</p>
+    <ul>
+      <li><strong>Data at rest</strong> — stored data (hard drives, databases, backups). Protected
+        with disk encryption, database encryption, access controls, and physical security — the goal
+        is protecting data even if the storage itself is stolen.</li>
+      <li><strong>Data in transit</strong> — data moving across a network (HTTPS, VPN, email).
+        Protected with HTTPS, VPNs, and secure email protocols — the goal is preventing eavesdropping
+        and tampering.</li>
+      <li><strong>Data in use</strong> — data actively being processed (RAM, open files). Protected
+        with memory protection, secure enclaves, access controls, and endpoint security — the goal is
+        protecting data while it's actually being accessed.</li>
+    </ul>
+
+    <h2>Practice question</h2>
+    <div class="callout">
+      <span class="callout-label">Question</span>
+      <p><strong>Q:</strong> During an SSL handshake, which entity validates the certificate signing
+        request (CSR) on behalf of the certificate authority?
+        <br><strong>A: Registration Authority (RA)</strong> — the RA is certified by a root CA and
+        authorized to validate CSRs for specific uses. PKI itself is a hierarchy of computers that
+        issue and manage certificates using asymmetric key pairs. During the handshake, the client
+        checks the certificate's validity period, confirms the issuing CA is on its trusted list, and
+        uses the CA's public key to verify the CA's signature on the server's certificate. To guard
+        against man-in-the-middle attacks, the client also compares the server's actual DNS name to
+        the DNS name on the certificate.</p>
+    </div>
+
+    <h2>Glossary</h2>
+
+    <h3>Security controls</h3>
+    <ul>
+      <li><strong>Security control</strong> — any safeguard used to reduce risk by protecting systems,
+        data, or people. Reduces likelihood, impact, or improves detection/recovery — never
+        eliminates threats outright.</li>
+      <li><strong>Risk</strong> — the potential for loss or damage when a threat exploits a
+        vulnerability.</li>
+      <li><strong>Threat</strong> — anything capable of causing harm to a system, network, or
+        organization.</li>
+      <li><strong>Vulnerability</strong> — a weakness that could be exploited by a threat.</li>
+    </ul>
+
+    <h3>Cryptography</h3>
+    <ul>
+      <li><strong>Cryptography</strong> — securing data using mathematical techniques to ensure
+        confidentiality, integrity, and authenticity.</li>
+      <li><strong>Plaintext</strong> — readable, unencrypted data.</li>
+      <li><strong>Cipher</strong> — the algorithm and key used to transform plaintext into
+        ciphertext.</li>
+      <li><strong>Ciphertext</strong> — unreadable data produced after encryption.</li>
+      <li><strong>Encryption / Decryption</strong> — converting plaintext to ciphertext, and back
+        again, using an algorithm and a key.</li>
+      <li><strong>Symmetric encryption</strong> — one key for both encryption and decryption (AES,
+        DES).</li>
+      <li><strong>Key distribution problem</strong> — the challenge of securely sharing a symmetric
+        key without interception.</li>
+      <li><strong>Asymmetric encryption</strong> — a public/private key pair (RSA, ECC).</li>
+      <li><strong>Hybrid encryption</strong> — asymmetric encryption for key exchange, symmetric
+        encryption for the actual data transfer.</li>
+      <li><strong>Hashing</strong> — a one-way process that converts data into a fixed-length hash
+        value (digest); SHA-256 is current, MD5 is no longer considered secure.</li>
+      <li><strong>Digital signature</strong> — provides authentication, integrity, and non-repudiation
+        using asymmetric encryption.</li>
+      <li><strong>Non-repudiation</strong> — assurance that a sender cannot deny having sent a
+        message.</li>
+    </ul>
+
+    <h3>Data states</h3>
+    <ul>
+      <li><strong>Data at rest</strong> — stored data.</li>
+      <li><strong>Data in transit</strong> — data moving across a network.</li>
+      <li><strong>Data in use</strong> — data actively being processed in memory or an
+        application.</li>
+    </ul>
+
+    <h2>Quick reference</h2>
+    <ul class="checklist">
+      <li>Controls are layered and overlapping — by purpose and by type</li>
+      <li>Cryptography supports CIA plus trust</li>
+      <li>Encryption is reversible with a key; hashing is not reversible at all</li>
+      <li>PKI answers "who am I really talking to?"</li>
+      <li>Data must be protected in all three states: at rest, in transit, in use</li>
+    </ul>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security Fundamentals — T3ch Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">GUIDE-002 · GUIDE</span>
+    <h1>Security Fundamentals</h1>
+  </div>
+
+  <article class="article-body">
+
+    <p>Part 1 of a Security+ (SY0-701) study series. Before any of the attacks, tools, or controls in
+      the rest of this series make sense, you need the vocabulary and mental model that everything
+      else gets built on: why security exists, what it's actually trying to protect, and the handful
+      of core concepts — the CIA triad, AAA, least privilege, defense in depth, zero trust, and risk —
+      that every later topic traces back to.</p>
+
+    <h2>What is cybersecurity?</h2>
+    <p>Cybersecurity is the practice of protecting computers, networks, applications, data, and users
+      from unauthorized access, data theft or leakage, data modification, and service disruption. It
+      focuses on <strong>risk management, not perfect protection</strong> — cybersecurity is
+      defensive, and most real-world jobs are about protection, detection, and response rather than
+      stopping every possible attack.</p>
+
+    <h2>Why cybersecurity exists</h2>
+    <p>Systems store valuable information, stay constantly connected, and attract attackers actively
+      looking for weaknesses — and mistakes happen. The common consequences of poor security are
+      financial loss, legal issues, loss of trust, and business downtime.</p>
+    <div class="callout">
+      <span class="callout-label">Key idea</span>
+      <p>Most attacks succeed because of misconfigurations or human error, not advanced hacking.</p>
+    </div>
+
+    <h2>Assets we must protect</h2>
+    <p>An asset is anything with value that needs protection: user accounts and credentials, files and
+      databases, servers and endpoints, network devices, cloud resources, and applications and
+      services.</p>
+
+    <h2>The CIA triad</h2>
+    <p>The CIA triad is the three core goals of cybersecurity. Every security control supports at
+      least one of these — and if one part of the triad fails, security has failed.</p>
+    <ul>
+      <li><strong>Confidentiality</strong> — only authorized users can access data. Enforced through
+        encryption, authentication, access control lists, and permissions. Failures here mean data
+        breaches, privacy violations, and identity theft. Confidentiality doesn't guarantee accuracy
+        or uptime — only secrecy.</li>
+      <li><strong>Integrity</strong> — data is accurate and hasn't been altered improperly. Enforced
+        through hashing, digital signatures, and file integrity monitoring. Integrity protects
+        against unauthorized <em>modification</em>, not viewing.</li>
+      <li><strong>Availability</strong> — systems and data are accessible when needed. Enforced through
+        backups, redundancy, failover systems, and DDoS protection. An unavailable system is
+        effectively useless, even if it's perfectly secure.</li>
+    </ul>
+    <p>Example — an online email system: confidentiality means only the owner can read their emails,
+      integrity means emails aren't altered in transit or storage, and availability means the email
+      service stays up. Security decisions often involve balancing the three — increasing one can
+      reduce another, like encryption adding overhead that costs performance.</p>
+
+    <h2>The AAA security model</h2>
+    <p>AAA describes how users interact with systems — networks, servers, applications, and cloud
+      environments all rely on it. It controls <strong>who gets access, what they can do, and what
+      they did.</strong></p>
+    <ul>
+      <li><strong>Authentication</strong> — answers "who are you?" Methods fall into something you
+        know (password, PIN), something you have (smart card, phone), or something you are
+        (biometrics). Multi-factor authentication (MFA) combines two or more factors. Authentication
+        proves identity only — it does not grant permissions.</li>
+      <li><strong>Authorization</strong> — answers "what are you allowed to do?" Enforced through file
+        permissions, user roles, and admin privileges. Authorization happens <em>after</em>
+        authentication — logging in successfully doesn't mean full access.</li>
+      <li><strong>Accounting</strong> — records logins, file access, changes made, and system activity,
+        used for auditing, troubleshooting, incident response, and compliance. Without logs,
+        investigations are nearly impossible.</li>
+    </ul>
+
+    <h2>Principle of least privilege</h2>
+    <p>Users receive only the access required for their job, limited in both scope and time. This
+      reduces the impact of a compromise, limits insider threats, and shrinks the attack surface.
+      Administrative access should be rare and tightly controlled.</p>
+
+    <h2>Defense in depth</h2>
+    <p>Defense in depth stacks multiple, overlapping layers of protection — a firewall plus an IDS,
+      MFA plus strong passwords, network segmentation plus access controls. The logic: an attacker
+      only needs to find one weakness, but a defender needs enough layers that no single failure is
+      fatal.</p>
+
+    <h2>Zero trust</h2>
+    <p>Zero trust assumes no system is trusted by default and verification is always required, both
+      inside and outside the network. Its core principles are strong authentication, least-privilege
+      access, and continuous monitoring.</p>
+
+    <h2>Understanding risk</h2>
+    <p>Risk is the possibility of loss from a threat exploiting a vulnerability. Security work is
+      about identifying risk, reducing risk, and accepting the risk that's left over — risk can never
+      be reduced to zero.</p>
+    <ul>
+      <li><strong>Threat</strong> — anything capable of causing harm: hackers, malware, natural
+        disasters, insider actions. Threats exist whether or not defenses are in place.</li>
+      <li><strong>Vulnerability</strong> — a weakness in a system or process: unpatched software, weak
+        passwords, misconfigured systems, risky user behavior. A vulnerability raises risk even if no
+        attack ever exploits it.</li>
+    </ul>
+    <div class="callout">
+      <span class="callout-label">Gotcha</span>
+      <p>Risk only exists where a threat and a vulnerability meet. A threat with no matching
+        vulnerability is not a risk, and a vulnerability with no threat against it is not a risk
+        either. Security controls exist to reduce risk — removing the vulnerability, reducing the
+        threat, or limiting the impact — not to eliminate threats outright.</p>
+    </div>
+
+    <h2>Quick reference</h2>
+    <ul class="checklist">
+      <li>CIA triad: Confidentiality, Integrity, Availability — every control supports at least one</li>
+      <li>AAA: Authentication (who), Authorization (what), Accounting (logged)</li>
+      <li>Least privilege: minimum access, minimum time</li>
+      <li>Defense in depth: multiple overlapping layers, no single point of failure</li>
+      <li>Zero trust: never trust by default, always verify</li>
+      <li>Risk = threat &times; vulnerability; risk is managed, never eliminated</li>
+    </ul>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>

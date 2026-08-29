@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incident Response &amp; Forensics — T3ch Spec</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <div class="brand"><span class="tick">//</span> T3ch Spec</div>
+    <nav><a href="../index.html">Catalog</a></nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="article-head">
+    <a class="back-link" href="../index.html">&larr; Back to catalog</a>
+    <span class="spec-id">GUIDE-006 · GUIDE</span>
+    <h1>Incident Response &amp; Forensics</h1>
+  </div>
+
+  <article class="article-body">
+
+    <p>Part 5 of a Security+ (SY0-701) study series. Incident response is the process for handling a
+      security incident — minimizing damage, stopping the attack, restoring systems safely, and
+      learning from what happened. It's not purely technical: it involves people, process, and
+      technology together. This part walks through the six-phase IR lifecycle, then digital forensics —
+      the discipline of proving, not just stopping, what happened.</p>
+
+    <h2>The six phases of incident response</h2>
+
+    <h3>1. Preparation</h3>
+    <p>Everything that happens <em>before</em> an incident: an Incident Response Plan (IRP), defined
+      roles (incident handlers, management, legal, communications), contact lists and escalation
+      paths, security tooling (SIEM, EDR, IDS/IPS, centralized logging), tested backups, and training
+      through tabletop exercises. The mindset here is that you assume an incident <em>will</em>
+      happen — being prepared is what keeps that moment from turning into chaos.</p>
+
+    <h3>2. Identification</h3>
+    <p>The question being asked is "is this actually an incident?" — detection plus validation.
+      Alerts get reviewed, logs get analyzed, Indicators of Compromise (IOCs) get checked, and scope
+      and impact get estimated. Examples: a malware alert from antivirus, unusual outbound traffic
+      flagged by a SIEM, multiple failed logins, or a user reporting a suspicious email. Not every
+      alert is an incident — false positives are common, and this phase exists to sort out which is
+      which.</p>
+
+    <h3>3. Containment</h3>
+    <p>Damage control — stopping the spread, not fixing everything yet.</p>
+    <ul>
+      <li><strong>Short-term containment</strong> — isolate the infected system, disconnect it from
+        the network, disable the compromised account.</li>
+      <li><strong>Long-term containment</strong> — temporary fixes, firewall rules, network
+        segmentation, configuration changes.</li>
+    </ul>
+    <div class="callout">
+      <span class="callout-label">Exam trap</span>
+      <p>Containment is not eradication. Stopping the bleeding and removing the threat are two
+        different phases, and the exam will test whether you know which is which.</p>
+    </div>
+
+    <h3>4. Eradication</h3>
+    <p>Now the threat actually gets removed — the attacker should no longer exist anywhere in the
+      environment. This includes removing malware, deleting malicious files, closing the exploited
+      vulnerability, patching systems, and re-imaging compromised machines when necessary. If
+      eradication is incomplete, the attacker comes back.</p>
+
+    <h3>5. Recovery</h3>
+    <p>Systems return to normal operation — carefully. Restore from known-good backups, verify system
+      integrity, monitor for reinfection, and gradually reconnect systems to the network rather than
+      all at once. Monitoring doesn't stop once systems are back online; recovering too fast is what
+      creates reinfection risk.</p>
+
+    <h3>6. Lessons learned</h3>
+    <p>Happens once everything is stable again — and it's the phase most often skipped in real life.
+      It produces a post-incident report, a timeline of events, what worked and what failed, and
+      updates to policies, controls, training, and the IRP itself. Every incident should leave the
+      organization's security posture better than it found it.</p>
+
+    <div class="callout">
+      <span class="callout-label">Exam clue words by phase</span>
+      <ul>
+        <li><strong>Preparation</strong> — "before an incident," "planning," "policies," "training"</li>
+        <li><strong>Identification</strong> — "detected," "alert triggered," "unusual activity
+          observed"</li>
+        <li><strong>Eradication</strong> — "remove," "eliminate," "clean systems"</li>
+        <li><strong>Recovery</strong> — "restore," "return to production," "monitor for recurrence"</li>
+        <li><strong>Lessons learned</strong> — "documentation," "review," "improvements"</li>
+      </ul>
+    </div>
+
+    <h2>Chain of custody</h2>
+    <p>Documents exactly who handled a piece of evidence, ensuring it stays untampered and admissible
+      in court. This matters whenever legal action is possible or law enforcement may get involved —
+      a broken chain of custody can make otherwise solid evidence worthless.</p>
+
+    <h2>Digital forensics</h2>
+    <p>Digital forensics is the process of identifying, preserving, analyzing, documenting, and
+      presenting digital evidence — focused on what happened, how it happened, and who was involved.
+      It often overlaps with incident response, but the two have different jobs: <strong>incident
+      response stops the attack; forensics understands and proves what happened.</strong></p>
+    <p>Its goals: preserve evidence integrity, reconstruct events, identify the attacker's actions,
+      support legal or disciplinary action, and prevent future incidents.</p>
+
+    <h3>The forensics process</h3>
+    <p>Security+ doesn't mandate one exact model, but the typical flow commonly aligns with NIST
+      guidance. Order matters, because evidence has to remain trustworthy at every step.</p>
+    <ol>
+      <li><strong>Identification</strong> — determine what systems are involved and what data might be
+        evidence (hard drives, RAM, logs, network traffic, mobile devices). You're locating potential
+        evidence here, not analyzing it yet.</li>
+      <li><strong>Preservation</strong> — prevent evidence alteration. Don't modify original data,
+        isolate systems if needed, maintain timestamps, use write blockers. Examples: removing a hard
+        drive and storing it securely, or disconnecting a system from the network without powering it
+        off. Evidence integrity beats convenience, every time.</li>
+      <li><strong>Collection</strong> — create forensic copies rather than working on originals, using
+        bit-by-bit imaging, and hash the data before and after collection so any change is
+        detectable. The original evidence stays untouched; all analysis happens on a copy.</li>
+      <li><strong>Examination</strong> — extract relevant data, filter out noise, recover deleted
+        files, and review logs, metadata, and artifacts. Still mostly technical work — conclusions
+        haven't formed yet.</li>
+      <li><strong>Analysis</strong> — interpret the evidence, build a timeline, and determine what
+        happened, how it happened, and the scope of compromise. This is where conclusions start
+        forming.</li>
+      <li><strong>Reporting</strong> — document the findings clearly, accurately, and reproducibly,
+        written for management, legal teams, and possibly a court. Poor documentation makes otherwise
+        good evidence useless.</li>
+    </ol>
+
+    <h3>Order of volatility</h3>
+    <p>Data disappears at different speeds, so volatile data has to be collected first:</p>
+    <ol>
+      <li>CPU registers / cache</li>
+      <li>RAM</li>
+      <li>Network connections</li>
+      <li>Running processes</li>
+      <li>Disk storage</li>
+      <li>Backups / archives</li>
+    </ol>
+
+    <h2>Forensic tools</h2>
+    <ul>
+      <li><strong>Autopsy</strong> — open-source, GUI-based digital forensics platform. Windows,
+        macOS, Linux.</li>
+      <li><strong>FTK Imager</strong> — creates forensic images with read-only access. Lightweight and
+        simple, Windows.</li>
+      <li><strong>Volatility</strong> — command-line memory forensics tool that analyzes RAM dumps,
+        extracting running processes, network connections, malware in memory, and injected code.</li>
+      <li><strong><a href="https://www.wireshark.org" target="_blank" rel="noopener">Wireshark</a></strong>
+        — packet capture and analysis, used across networking and forensics. Reveals captured
+        traffic, credentials sent in cleartext, DNS queries, and suspicious outbound connections.</li>
+      <li><strong>Plaso</strong> — builds forensic timelines by pulling from logs, browser history,
+        and file metadata, correlating events. Windows, Linux, macOS.</li>
+      <li><strong>Cellebrite UFED</strong> — industry-standard mobile forensics, used by law
+        enforcement and enterprises. Extracts SMS, app data, and location history from iOS, Android,
+        SIM cards, memory cards, and IoT devices.</li>
+      <li><strong>HashCalc</strong> — a simple hashing utility for MD5/SHA integrity checks. Windows.</li>
+    </ul>
+
+    <h2>Quick reference</h2>
+    <ul class="checklist">
+      <li>IR phases: Preparation &rarr; Identification &rarr; Containment &rarr; Eradication &rarr;
+        Recovery &rarr; Lessons Learned</li>
+      <li>Containment stops the spread; eradication removes the threat &mdash; they are not the same
+        phase</li>
+      <li>Forensics: Identification &rarr; Preservation &rarr; Collection &rarr; Examination &rarr;
+        Analysis &rarr; Reporting</li>
+      <li>Volatile data first: CPU/cache, then RAM, then network, then processes, then disk, then
+        backups</li>
+      <li>Analyze copies, never originals &mdash; hash before and after to prove integrity</li>
+      <li>Incident response stops the attack; forensics proves what happened</li>
+    </ul>
+
+  </article>
+</div>
+
+<footer class="site-foot">
+  <div class="wrap">T3ch Spec — an independent, ad-free reference.</div>
+</footer>
+
+</body>
+</html>
